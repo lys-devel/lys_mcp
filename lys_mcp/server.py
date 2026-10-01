@@ -12,11 +12,14 @@ Register to Claude Code::
 import json
 import base64
 
-from mcp.server.fastmcp import FastMCP, Image
+try:
+    from mcp.server.mcpserver import MCPServer, Image  # mcp >= 2
+except ImportError:
+    from mcp.server.fastmcp import FastMCP as MCPServer, Image  # mcp 1.x
 
 from .client import LysClient, LysRemoteError, formatResponse, instances, findLabel
 
-mcp = FastMCP("lys")
+mcp = MCPServer("lys")
 _label = None  # label of lys selected by lys_select
 
 
