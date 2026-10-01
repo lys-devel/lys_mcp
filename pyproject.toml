@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lys-mcp"
+version = "0.1.0"
+description = "MCP server and client to control lys from Claude Code and other processes"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "GNU GPLv3" }
+dependencies = []
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.2"]
+
+[project.scripts]
+lys-remote = "lys_mcp.client:main"
+lys-mcp = "lys_mcp.server:main"
+
+[tool.setuptools]
+packages = ["lys_mcp"]

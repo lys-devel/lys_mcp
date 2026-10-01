@@ -1,0 +1,54 @@
+Installation
+=============================
+
+System requirements
+-------------------------
+- Python (version >= 3.10).
+- *lys* that supports ``--remote`` option. *lys* and *lys_mcp* can be installed in different environments.
+- Claude Code (https://claude.com/claude-code), if you want to control lys from Claude.
+
+Installation from source
+--------------------------------------------------------
+
+1. Update pip::
+
+    pip install --upgrade pip
+
+2. Clone lys_mcp, or download the source code::
+
+    git clone <URL of lys_mcp repository>
+
+3. Install lys_mcp by pip. The ``[mcp]`` option installs the MCP server (``lys-mcp`` command) together with the command line client (``lys-remote`` command)::
+
+    cd lys_mcp
+    pip install -e ".[mcp]"
+
+   If you only need the command line client, ``[mcp]`` can be omitted::
+
+    pip install -e .
+
+4. Make sure that the commands are installed::
+
+    lys-remote --help
+    which lys-mcp
+
+Registration to Claude Code
+--------------------------------------------------------
+
+Claude Code needs to know the MCP server. Register it once by the command below::
+
+    claude mcp add --scope user lys -- lys-mcp
+
+``--scope user`` enables lys tools in all directories. Restart Claude Code after the registration, and confirm that *lys* is listed by ``/mcp`` command in Claude Code.
+
+If you want to enable lys tools only in a specific project, put ``.mcp.json`` in the project directory instead::
+
+    {
+      "mcpServers": {
+        "lys": {
+          "command": "lys-mcp"
+        }
+      }
+    }
+
+If ``lys-mcp`` is installed in a virtual environment, use the full path of the command (e.g. ``~/.venv/lys/bin/lys-mcp``).

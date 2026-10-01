@@ -1,0 +1,26 @@
+lys_mcp documentation
+===============================
+
+*lys_mcp* enables other processes, such as `Claude Code <https://claude.com/claude-code>`_ and the command line, to control *lys* (https://github.com/lys-devel/lys).
+
+With *lys_mcp*, Claude can execute Python commands in the lys shell and see images of lys graphs and matplotlib figures.
+
+How it works::
+
+    Claude Code ⇄ (MCP) ⇄ lys-mcp ⇄ (local socket) ⇄ lys (python -m lys --remote)
+                                        ⇅
+                         lys-remote (command line) / LysClient (Python)
+
+- *lys* accepts commands through a local socket only when it is launched with ``--remote`` option.
+- ``lys-mcp`` is an MCP server, which is launched by Claude Code automatically and passes the requests of Claude to lys.
+- ``lys-remote`` is a command line client to send commands to lys by hand.
+
+To use *lys_mcp*, go to :doc:`install` and :doc:`usage`.
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Contents:
+
+   install
+   usage
+   api
