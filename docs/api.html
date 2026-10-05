@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python API &mdash; lys_mcp 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            lys_mcp
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-lys_mcp.client">Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lys_mcp.client.LysClient"><code class="docutils literal notranslate"><span class="pre">LysClient</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lys_mcp.client.LysClient.close"><code class="docutils literal notranslate"><span class="pre">LysClient.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lys_mcp.client.LysClient.connect"><code class="docutils literal notranslate"><span class="pre">LysClient.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lys_mcp.client.LysClient.exec"><code class="docutils literal notranslate"><span class="pre">LysClient.exec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lys_mcp.client.LysClient.image"><code class="docutils literal notranslate"><span class="pre">LysClient.image()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lys_mcp.client.LysClient.info"><code class="docutils literal notranslate"><span class="pre">LysClient.info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lys_mcp.client.LysClient.label"><code class="docutils literal notranslate"><span class="pre">LysClient.label</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lys_mcp.client.LysClient.list"><code class="docutils literal notranslate"><span class="pre">LysClient.list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lys_mcp.client.LysClient.request"><code class="docutils literal notranslate"><span class="pre">LysClient.request()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lys_mcp.client.LysRemoteError"><code class="docutils literal notranslate"><span class="pre">LysRemoteError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lys_mcp.client.findLabel"><code class="docutils literal notranslate"><span class="pre">findLabel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lys_mcp.client.formatResponse"><code class="docutils literal notranslate"><span class="pre">formatResponse()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lys_mcp.client.instances"><code class="docutils literal notranslate"><span class="pre">instances()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lys_mcp.client.listLabels"><code class="docutils literal notranslate"><span class="pre">listLabels()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lys_mcp.client.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lys_mcp.client.resolveLabel"><code class="docutils literal notranslate"><span class="pre">resolveLabel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lys_mcp.client.serverName"><code class="docutils literal notranslate"><span class="pre">serverName()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">lys_mcp</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Python API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Link to this heading"></a></h1>
+<p>The tools of the MCP server are described in <a class="reference internal" href="usage.html"><span class="doc">Usage</span></a>.</p>
+<section id="module-lys_mcp.client">
+<span id="client"></span><h2>Client<a class="headerlink" href="#module-lys_mcp.client" title="Link to this heading"></a></h2>
+<p>Client of lys remote server (lys/localPlugins/Remote.py in lys).</p>
+<p>This module does not depend on lys and Qt, so that it can be used from MCP server and command line.
+lys should be launched with –remote option, e.g. python -m lys –remote</p>
+<p>Each lys has a label (python -m lys –remote LABEL, default is its process id).
+If only one lys is running, it is selected automatically. Otherwise, select it by –label or LYS_REMOTE environment variable.</p>
+<p>Command line usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="n">instances</span>                    <span class="c1"># list running lys</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="s2">&quot;a = 1; a + 1&quot;</span>                 <span class="c1"># execute code and print the result</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">-</span><span class="n">l</span> <span class="n">expA</span> <span class="s2">&quot;a = 1; a + 1&quot;</span>         <span class="c1"># execute code in lys launched with --remote expA</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">-</span><span class="n">l</span> <span class="o">~/</span><span class="n">data</span><span class="o">/</span><span class="n">expA</span> <span class="s2">&quot;a + 1&quot;</span>         <span class="c1"># execute code in lys launched in ~/data/expA</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">-</span><span class="n">f</span> <span class="n">script</span><span class="o">.</span><span class="n">py</span>                   <span class="c1"># execute file</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="n">image</span> <span class="n">out</span><span class="o">.</span><span class="n">png</span>                <span class="c1"># save image of the front canvas</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="n">image</span> <span class="n">out</span><span class="o">.</span><span class="n">png</span> <span class="o">--</span><span class="n">target</span> <span class="n">g</span>     <span class="c1"># save image of the canvas/figure g</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="nb">list</span>                         <span class="c1"># list variables in shell</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="lys_mcp.client.LysClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">LysClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#LysClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.LysClient" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Client to send requests to lys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – The label of lys. See <a class="reference internal" href="#lys_mcp.client.resolveLabel" title="lys_mcp.client.resolveLabel"><code class="xref py py-func docutils literal notranslate"><span class="pre">resolveLabel()</span></code></a>.</p></li>
+<li><p><strong>timeout</strong> (<em>float</em>) – Timeout in seconds.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">LysClient</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;a = 1; a + 1&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>   <span class="c1"># &quot;2&quot;</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="lys_mcp.client.LysClient.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#LysClient.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.LysClient.close" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lys_mcp.client.LysClient.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#LysClient.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.LysClient.connect" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lys_mcp.client.LysClient.exec">
+<span class="sig-name descname"><span class="pre">exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#LysClient.exec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.LysClient.exec" title="Link to this definition"></a></dt>
+<dd><p>Execute code in lys shell. The value of the last expression is returned as ‘result’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lys_mcp.client.LysClient.image">
+<span class="sig-name descname"><span class="pre">image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#LysClient.image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.LysClient.image" title="Link to this definition"></a></dt>
+<dd><p>Return response with png image (base64) of canvas, matplotlib figure or widget as ‘image’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lys_mcp.client.LysClient.info">
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#LysClient.info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.LysClient.info" title="Link to this definition"></a></dt>
+<dd><p>Return label, pid, home directory and protocol version of lys.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lys_mcp.client.LysClient.label">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">label</span></span><a class="headerlink" href="#lys_mcp.client.LysClient.label" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lys_mcp.client.LysClient.list">
+<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#LysClient.list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.LysClient.list" title="Link to this definition"></a></dt>
+<dd><p>Return variables in lys shell as ‘result’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lys_mcp.client.LysClient.request">
+<span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#LysClient.request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.LysClient.request" title="Link to this definition"></a></dt>
+<dd><p>Send a request and return the response as dict.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="lys_mcp.client.LysRemoteError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">LysRemoteError</span></span><a class="reference internal" href="_modules/lys_mcp/client.html#LysRemoteError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.LysRemoteError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lys_mcp.client.findLabel">
+<span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">findLabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#findLabel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.findLabel" title="Link to this definition"></a></dt>
+<dd><p>Return the label of lys whose label or home directory is <em>key</em>. If not found, <em>key</em> is returned.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lys_mcp.client.formatResponse">
+<span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">formatResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">res</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#formatResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.formatResponse" title="Link to this definition"></a></dt>
+<dd><p>Format response as text.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lys_mcp.client.instances">
+<span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">instances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.instances" title="Link to this definition"></a></dt>
+<dd><p>Return the information of running lys as list of dict.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lys_mcp.client.listLabels">
+<span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">listLabels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#listLabels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.listLabels" title="Link to this definition"></a></dt>
+<dd><p>Return the labels of running lys.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lys_mcp.client.main">
+<span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.main" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lys_mcp.client.resolveLabel">
+<span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">resolveLabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#resolveLabel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.resolveLabel" title="Link to this definition"></a></dt>
+<dd><p>Return the label of lys to be connected.</p>
+<p><em>label</em> can be the label or the home directory of lys (the directory where lys was launched).
+If <em>label</em> is None, LYS_REMOTE environment variable is used. If it is not set, the running lys is selected when only one lys is running.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lys_mcp.client.serverName">
+<span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">serverName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#serverName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.serverName" title="Link to this definition"></a></dt>
+<dd><p>Return the name of the local socket for <em>label</em>. The same rule as serverName in lys/localPlugins/Remote.py.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Asuka Nakamura.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

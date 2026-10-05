@@ -1,0 +1,206 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; lys_mcp 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Python API" href="api.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            lys_mcp
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#launching-lys-in-remote-mode">Launching lys in remote mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controlling-lys-from-claude-code">Controlling lys from Claude Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controlling-lys-from-command-line">Controlling lys from command line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controlling-lys-from-python">Controlling lys from Python</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Python API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">lys_mcp</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
+<section id="launching-lys-in-remote-mode">
+<h2>Launching lys in remote mode<a class="headerlink" href="#launching-lys-in-remote-mode" title="Link to this heading"></a></h2>
+<p><em>lys</em> accepts commands from other processes only when it is launched with <code class="docutils literal notranslate"><span class="pre">--remote</span></code> option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">lys</span> <span class="o">--</span><span class="n">remote</span>
+</pre></div>
+</div>
+<p>When lys starts listening, the message below is shown in the lys log:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lys</span> <span class="n">remote</span><span class="p">:</span> <span class="n">listening</span> <span class="k">with</span> <span class="n">label</span> <span class="mi">12345</span> <span class="p">(</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">lys</span><span class="o">-</span><span class="n">remote</span><span class="o">-</span><span class="n">user</span><span class="o">-</span><span class="mi">12345</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each lys in remote mode has a <em>label</em>, which is used to select lys when several lys are running.
+By default, the process id is used as the label. You can give your own label after <code class="docutils literal notranslate"><span class="pre">--remote</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">lys</span> <span class="o">--</span><span class="n">remote</span> <span class="n">expA</span>
+</pre></div>
+</div>
+<p>The commands sent from other processes are shown in the lys log with <code class="docutils literal notranslate"><span class="pre">[remote]</span> <span class="pre">&gt;</span></code> prefix, and they are also added to the command history.
+The variables defined by the commands are shared with the lys command line, and vice versa.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The local socket can be accessed only by the same user on the same computer. Note that any Python code can be executed through it.</p>
+</div>
+</section>
+<section id="controlling-lys-from-claude-code">
+<h2>Controlling lys from Claude Code<a class="headerlink" href="#controlling-lys-from-claude-code" title="Link to this heading"></a></h2>
+<p>After <a class="reference internal" href="install.html"><span class="doc">Installation</span></a>, launch lys in remote mode and start Claude Code. Then ask Claude in natural language, for example:</p>
+<ul class="simple">
+<li><p>“Display a 2D Gaussian in lys and show me the graph.”</p></li>
+<li><p>“Look at the front graph in lys and make the axis labels larger.”</p></li>
+<li><p>“Fit the data in variable w with a Gaussian and plot the result.”</p></li>
+</ul>
+<p>Claude uses the tools below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Tool</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lys_exec</span></code></p></td>
+<td><p>Execute Python code in the lys shell and return the output (and the value of the last expression).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lys_image</span></code></p></td>
+<td><p>Return a PNG image of a lys canvas, a matplotlib figure, or a Qt widget. Claude can see the image directly. The front canvas is used by default.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lys_list</span></code></p></td>
+<td><p>List variables in the lys shell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lys_instances</span></code></p></td>
+<td><p>List running lys with their label, process id, and home directory.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lys_select</span></code></p></td>
+<td><p>Select lys to be controlled by its label or home directory.</p></td>
+</tr>
+</tbody>
+</table>
+<p>If only one lys is running in remote mode, it is selected automatically.
+If several lys are running, tell Claude which lys should be used, for example “Use lys launched in ~/data/expA” or “Use lys with label expA”.
+Claude finds it by <code class="docutils literal notranslate"><span class="pre">lys_instances</span></code> and selects it by <code class="docutils literal notranslate"><span class="pre">lys_select</span></code>.</p>
+</section>
+<section id="controlling-lys-from-command-line">
+<h2>Controlling lys from command line<a class="headerlink" href="#controlling-lys-from-command-line" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">lys-remote</span></code> command sends commands to lys by hand. It is useful to check the connection:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="n">instances</span>                          <span class="c1"># list running lys</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="s2">&quot;w = Wave(np.random.rand(50, 50)); display(w)&quot;</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">-</span><span class="n">f</span> <span class="n">script</span><span class="o">.</span><span class="n">py</span>                         <span class="c1"># execute file</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="n">image</span> <span class="n">out</span><span class="o">.</span><span class="n">png</span>                      <span class="c1"># save image of the front canvas</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="n">image</span> <span class="n">out</span><span class="o">.</span><span class="n">png</span> <span class="o">--</span><span class="n">target</span> <span class="n">g</span>           <span class="c1"># save image of canvas/figure g</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="nb">list</span>                               <span class="c1"># list variables in lys shell</span>
+</pre></div>
+</div>
+<p>If several lys are running, select lys by its label or home directory with <code class="docutils literal notranslate"><span class="pre">-l</span></code> option, or by <code class="docutils literal notranslate"><span class="pre">LYS_REMOTE</span></code> environment variable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">-</span><span class="n">l</span> <span class="n">expA</span> <span class="s2">&quot;a + 1&quot;</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">-</span><span class="n">l</span> <span class="o">~/</span><span class="n">data</span><span class="o">/</span><span class="n">expA</span> <span class="s2">&quot;a + 1&quot;</span>
+<span class="n">LYS_REMOTE</span><span class="o">=</span><span class="n">expA</span> <span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="s2">&quot;a + 1&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="controlling-lys-from-python">
+<h2>Controlling lys from Python<a class="headerlink" href="#controlling-lys-from-python" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="api.html#lys_mcp.client.LysClient" title="lys_mcp.client.LysClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">lys_mcp.client.LysClient</span></code></a> can be used from Python scripts and Jupyter notebook:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">lys_mcp.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">LysClient</span>
+
+<span class="k">with</span> <span class="n">LysClient</span><span class="p">()</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>                  <span class="c1"># or LysClient(&quot;expA&quot;)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="s2">&quot;a = 1</span><span class="se">\n</span><span class="s2">a + 1&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>                <span class="c1"># 2</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="api.html"><span class="doc">Python API</span></a> for details.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="Python API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Asuka Nakamura.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

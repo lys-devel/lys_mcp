@@ -8,8 +8,20 @@ version = "0.1.0"
 description = "MCP server and client to control lys from Claude Code and other processes"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "GNU GPLv3" }
+license = { file = "LICENSE.md" }
+authors = [{ name = "Asuka Nakamura", email = "lys.devel@gmail.com" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/lys-devel/lys_mcp"
+Documentation = "https://lys-devel.github.io/lys_mcp/"
+lys = "https://github.com/lys-devel/lys"
 
 [project.optional-dependencies]
 mcp = ["mcp>=1.2"]
