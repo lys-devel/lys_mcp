@@ -23,6 +23,8 @@ Then launch lys in remote mode:
 python -m lys --remote
 ```
 
+To control lys on another computer in the same network, launch lys with `--port` (e.g. `python -m lys --remote --port 8765`) and connect by `tcp://<host>:8765`. See [usage](https://lys-devel.github.io/lys_mcp/usage.html#connecting-to-lys-on-another-computer).
+
 See the [install documentation](https://lys-devel.github.io/lys_mcp/install.html) and [usage](https://lys-devel.github.io/lys_mcp/usage.html) for details.
 
 ## Contributing

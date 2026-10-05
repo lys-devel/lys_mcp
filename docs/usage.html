@@ -49,6 +49,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#launching-lys-in-remote-mode">Launching lys in remote mode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#controlling-lys-from-claude-code">Controlling lys from Claude Code</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#controlling-lys-from-command-line">Controlling lys from command line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#connecting-to-lys-on-another-computer">Connecting to lys on another computer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#controlling-lys-from-python">Controlling lys from Python</a></li>
 </ul>
 </li>
@@ -151,11 +152,45 @@ Claude finds it by <code class="docutils literal notranslate"><span class="pre">
 <span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="nb">list</span>                               <span class="c1"># list variables in lys shell</span>
 </pre></div>
 </div>
-<p>If several lys are running, select lys by its label or home directory with <code class="docutils literal notranslate"><span class="pre">-l</span></code> option, or by <code class="docutils literal notranslate"><span class="pre">LYS_REMOTE</span></code> environment variable:</p>
+<p>If several lys are running, select lys by its label or home directory with <code class="docutils literal notranslate"><span class="pre">-l</span></code> option, or by <code class="docutils literal notranslate"><span class="pre">LYS_REMOTE</span></code> environment variable (see also <a class="reference internal" href="#connecting-to-lys-on-another-computer">Connecting to lys on another computer</a>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">-</span><span class="n">l</span> <span class="n">expA</span> <span class="s2">&quot;a + 1&quot;</span>
 <span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">-</span><span class="n">l</span> <span class="o">~/</span><span class="n">data</span><span class="o">/</span><span class="n">expA</span> <span class="s2">&quot;a + 1&quot;</span>
 <span class="n">LYS_REMOTE</span><span class="o">=</span><span class="n">expA</span> <span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="s2">&quot;a + 1&quot;</span>
 </pre></div>
+</div>
+</section>
+<section id="connecting-to-lys-on-another-computer">
+<h2>Connecting to lys on another computer<a class="headerlink" href="#connecting-to-lys-on-another-computer" title="Link to this heading"></a></h2>
+<p>lys on another computer in the same network (e.g. a laboratory LAN) can be controlled through TCP.
+This is useful when lys runs on a computer without internet connection, and Claude Code runs on another computer.</p>
+<ol class="arabic">
+<li><p>Launch lys with <code class="docutils literal notranslate"><span class="pre">--port</span></code> option on the computer where lys runs. <code class="docutils literal notranslate"><span class="pre">--token</span></code> is optional but recommended:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">lys</span> <span class="o">--</span><span class="n">remote</span> <span class="n">expA</span> <span class="o">--</span><span class="n">port</span> <span class="mi">8765</span> <span class="o">--</span><span class="n">token</span> <span class="n">mysecret</span>
+</pre></div>
+</div>
+<p>The addresses to connect are shown in the lys log:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lys</span> <span class="n">remote</span><span class="p">:</span> <span class="n">listening</span> <span class="n">on</span> <span class="n">TCP</span> <span class="n">port</span> <span class="mi">8765</span> <span class="p">(</span><span class="mf">192.168.1.4</span><span class="p">:</span><span class="mi">8765</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>On Windows, allow Python to communicate on private networks when the firewall asks.</p>
+</li>
+<li><p>On the computer where Claude Code runs, check the connection by <code class="docutils literal notranslate"><span class="pre">lys-remote</span></code>. The address is given as <code class="docutils literal notranslate"><span class="pre">tcp://&lt;host&gt;:&lt;port&gt;</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">-</span><span class="n">l</span> <span class="n">tcp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168.1.4</span><span class="p">:</span><span class="mi">8765</span> <span class="o">--</span><span class="n">token</span> <span class="n">mysecret</span> <span class="s2">&quot;1 + 1&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Register the MCP server with the address and the token as environment variables, and restart Claude Code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">claude</span> <span class="n">mcp</span> <span class="n">remove</span> <span class="n">lys</span> <span class="o">--</span><span class="n">scope</span> <span class="n">user</span>
+<span class="n">claude</span> <span class="n">mcp</span> <span class="n">add</span> <span class="o">--</span><span class="n">scope</span> <span class="n">user</span> <span class="n">lys</span> <span class="o">-</span><span class="n">e</span> <span class="n">LYS_REMOTE</span><span class="o">=</span><span class="n">tcp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168.1.4</span><span class="p">:</span><span class="mi">8765</span> <span class="o">-</span><span class="n">e</span> <span class="n">LYS_REMOTE_TOKEN</span><span class="o">=</span><span class="n">mysecret</span> <span class="o">--</span> <span class="n">lys</span><span class="o">-</span><span class="n">mcp</span>
+</pre></div>
+</div>
+<p>Then Claude controls lys on the other computer by default.
+Without <code class="docutils literal notranslate"><span class="pre">LYS_REMOTE</span></code>, you can also tell Claude the address, e.g. “Use lys at <a class="reference external" href="tcp://192.168.1.4:8765">tcp://192.168.1.4:8765</a>”. In that case, <code class="docutils literal notranslate"><span class="pre">LYS_REMOTE_TOKEN</span></code> should still be registered if lys is launched with <code class="docutils literal notranslate"><span class="pre">--token</span></code>.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The TCP connection is not encrypted, and any Python code can be executed through it. Use it only in a trusted network, and use <code class="docutils literal notranslate"><span class="pre">--token</span></code>.</p>
 </div>
 </section>
 <section id="controlling-lys-from-python">

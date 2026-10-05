@@ -36,11 +36,13 @@ def lys_instances() -> str:
     """
     List running lys (launched with --remote) with their label, process id, and home directory.
 
+    lys on another computer is listed only when LYS_REMOTE environment variable is set to "tcp://<host>:<port>".
+
     If several lys are running, select one of them by lys_select before using other tools.
     """
     res = instances()
     if len(res) == 0:
-        return "No lys is running. Ask the user to launch lys with: python -m lys --remote"
+        return "No lys is running. Ask the user to launch lys with: python -m lys --remote (or add --port 8765 for lys on another computer, and connect by lys_select with tcp://<host>:8765)"
     return json.dumps({"selected": _label, "instances": res}, indent=1, ensure_ascii=False)
 
 
@@ -48,6 +50,9 @@ def lys_instances() -> str:
 def lys_select(label: str) -> str:
     """
     Select lys to be controlled by its label or its home directory (the directory where lys was launched, see lys_instances).
+
+    lys on another computer launched with --port can be selected by "tcp://<host>:<port>", e.g. tcp://192.168.1.4:8765.
+    Its token is given by LYS_REMOTE_TOKEN environment variable of the MCP server.
 
     Empty string clears the selection.
     """

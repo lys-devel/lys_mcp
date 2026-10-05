@@ -106,6 +106,9 @@
 lys should be launched with –remote option, e.g. python -m lys –remote</p>
 <p>Each lys has a label (python -m lys –remote LABEL, default is its process id).
 If only one lys is running, it is selected automatically. Otherwise, select it by –label or LYS_REMOTE environment variable.</p>
+<p>lys on another computer can be used when it is launched with –port option (python -m lys –remote –port 8765).
+Select it by “<a class="reference external" href="tcp:/">tcp:/</a>/&lt;host&gt;:&lt;port&gt;” (e.g. -l <a class="reference external" href="tcp://192.168.1.4:8765">tcp://192.168.1.4:8765</a> or LYS_REMOTE=tcp://192.168.1.4:8765).
+If lys is launched with –token, give the token by –token or LYS_REMOTE_TOKEN environment variable.</p>
 <p>Command line usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="n">instances</span>                    <span class="c1"># list running lys</span>
 <span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="s2">&quot;a = 1; a + 1&quot;</span>                 <span class="c1"># execute code and print the result</span>
@@ -115,11 +118,12 @@ If only one lys is running, it is selected automatically. Otherwise, select it b
 <span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="n">image</span> <span class="n">out</span><span class="o">.</span><span class="n">png</span>                <span class="c1"># save image of the front canvas</span>
 <span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="n">image</span> <span class="n">out</span><span class="o">.</span><span class="n">png</span> <span class="o">--</span><span class="n">target</span> <span class="n">g</span>     <span class="c1"># save image of the canvas/figure g</span>
 <span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">--</span><span class="nb">list</span>                         <span class="c1"># list variables in shell</span>
+<span class="n">lys</span><span class="o">-</span><span class="n">remote</span> <span class="o">-</span><span class="n">l</span> <span class="n">tcp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168.1.4</span><span class="p">:</span><span class="mi">8765</span> <span class="s2">&quot;a&quot;</span>  <span class="c1"># lys on another computer launched with --port 8765</span>
 </pre></div>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="lys_mcp.client.LysClient">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">LysClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#LysClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.LysClient" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">LysClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#LysClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.LysClient" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Client to send requests to lys.</p>
 <dl class="field-list simple">
@@ -127,6 +131,7 @@ If only one lys is running, it is selected automatically. Otherwise, select it b
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The label of lys. See <a class="reference internal" href="#lys_mcp.client.resolveLabel" title="lys_mcp.client.resolveLabel"><code class="xref py py-func docutils literal notranslate"><span class="pre">resolveLabel()</span></code></a>.</p></li>
 <li><p><strong>timeout</strong> (<em>float</em>) – Timeout in seconds.</p></li>
+<li><p><strong>token</strong> (<em>str</em>) – The token for lys launched with –token. If None, LYS_REMOTE_TOKEN environment variable is used.</p></li>
 </ul>
 </dd>
 </dl>
@@ -205,6 +210,7 @@ If only one lys is running, it is selected automatically. Otherwise, select it b
 <dt class="sig sig-object py" id="lys_mcp.client.instances">
 <span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">instances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#instances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.instances" title="Link to this definition"></a></dt>
 <dd><p>Return the information of running lys as list of dict.</p>
+<p>lys on another computer is included when it is given by LYS_REMOTE environment variable.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -222,7 +228,7 @@ If only one lys is running, it is selected automatically. Otherwise, select it b
 <dt class="sig sig-object py" id="lys_mcp.client.resolveLabel">
 <span class="sig-prename descclassname"><span class="pre">lys_mcp.client.</span></span><span class="sig-name descname"><span class="pre">resolveLabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lys_mcp/client.html#resolveLabel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lys_mcp.client.resolveLabel" title="Link to this definition"></a></dt>
 <dd><p>Return the label of lys to be connected.</p>
-<p><em>label</em> can be the label or the home directory of lys (the directory where lys was launched).
+<p><em>label</em> can be the label or the home directory of lys (the directory where lys was launched), or “<a class="reference external" href="tcp:/">tcp:/</a>/&lt;host&gt;:&lt;port&gt;” for lys on another computer.
 If <em>label</em> is None, LYS_REMOTE environment variable is used. If it is not set, the running lys is selected when only one lys is running.</p>
 </dd></dl>
 

@@ -7,6 +7,10 @@ lys should be launched with --remote option, e.g. python -m lys --remote
 Each lys has a label (python -m lys --remote LABEL, default is its process id).
 If only one lys is running, it is selected automatically. Otherwise, select it by --label or LYS_REMOTE environment variable.
 
+lys on another computer can be used when it is launched with --port option (python -m lys --remote --port 8765).
+Select it by "tcp://<host>:<port>" (e.g. -l tcp://192.168.1.4:8765 or LYS_REMOTE=tcp://192.168.1.4:8765).
+If lys is launched with --token, give the token by --token or LYS_REMOTE_TOKEN environment variable.
+
 Command line usage::
 
     lys-remote --instances                    # list running lys
@@ -17,6 +21,7 @@ Command line usage::
     lys-remote --image out.png                # save image of the front canvas
     lys-remote --image out.png --target g     # save image of the canvas/figure g
     lys-remote --list                         # list variables in shell
+    lys-remote -l tcp://192.168.1.4:8765 "a"  # lys on another computer launched with --port 8765
 """
 
 import os
@@ -54,6 +59,18 @@ def listLabels():
     return sorted([label for label in labels if _isAlive(label)])
 
 
+def _isTcp(label):
+    return label.startswith("tcp://")
+
+
+def _parseTcp(label):
+    """Return (host, port) from "tcp://host:port"."""
+    host, _, port = label[len("tcp://"):].rstrip("/").rpartition(":")
+    if not host or not port.isdigit():
+        raise LysRemoteError("Invalid address " + label + ". Use tcp://<host>:<port>, e.g. tcp://192.168.1.4:8765")
+    return host.strip("[]"), int(port)
+
+
 def _isAlive(label):
     try:
         _connect(serverName(label), timeout=1).close()
@@ -66,7 +83,7 @@ def resolveLabel(label=None):
     """
     Return the label of lys to be connected.
 
-    *label* can be the label or the home directory of lys (the directory where lys was launched).
+    *label* can be the label or the home directory of lys (the directory where lys was launched), or "tcp://<host>:<port>" for lys on another computer.
     If *label* is None, LYS_REMOTE environment variable is used. If it is not set, the running lys is selected when only one lys is running.
     """
     label = label or os.environ.get("LYS_REMOTE")
@@ -82,6 +99,8 @@ def resolveLabel(label=None):
 
 def findLabel(key):
     """Return the label of lys whose label or home directory is *key*. If not found, *key* is returned."""
+    if _isTcp(key):
+        return key
     labels = listLabels()
     if key in labels:
         return key
@@ -103,6 +122,7 @@ class LysClient:
     Args:
         label(str): The label of lys. See :func:`resolveLabel`.
         timeout(float): Timeout in seconds.
+        token(str): The token for lys launched with --token. If None, LYS_REMOTE_TOKEN environment variable is used.
 
     Example::
 
@@ -113,9 +133,10 @@ class LysClient:
 
     _ids = itertools.count(1)
 
-    def __init__(self, label=None, timeout=600):
+    def __init__(self, label=None, timeout=600, token=None):
         self._label = label
         self._timeout = timeout
+        self._token = token or os.environ.get("LYS_REMOTE_TOKEN")
         self._conn = None
 
     def __enter__(self):
@@ -131,6 +152,13 @@ class LysClient:
 
     def connect(self):
         self._label = resolveLabel(self._label)
+        if _isTcp(self._label):
+            host, port = _parseTcp(self._label)
+            try:
+                self._conn = _TcpConnection(host, port, self._timeout)
+            except OSError as e:
+                raise LysRemoteError("Cannot connect to lys at " + self._label + " (" + str(e) + "). Check that lys is launched with --port " + str(port) + " and the firewall allows the port.") from e
+            return
         try:
             self._conn = _connect(serverName(self._label), self._timeout)
         except OSError as e:
@@ -146,6 +174,8 @@ class LysClient:
         if self._conn is None:
             self.connect()
         req = dict(kwargs, op=op, id=next(self._ids))
+        if self._token is not None:
+            req["token"] = self._token
         self._conn.send(json.dumps(req).encode("utf-8") + b"\n")
         return json.loads(self._conn.readline().decode("utf-8"))
 
@@ -172,15 +202,9 @@ def _connect(name, timeout):
     return _UnixConnection(name, timeout)
 
 
-class _UnixConnection:
-    def __init__(self, path, timeout):
-        self._sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        self._sock.settimeout(timeout)
-        try:
-            self._sock.connect(path)
-        except OSError:
-            self._sock.close()
-            raise
+class _SocketConnection:
+    def __init__(self, sock):
+        self._sock = sock
         self._file = self._sock.makefile("rb")
 
     def send(self, data):
@@ -195,6 +219,25 @@ class _UnixConnection:
     def close(self):
         self._file.close()
         self._sock.close()
+
+
+class _UnixConnection(_SocketConnection):
+    def __init__(self, path, timeout):
+        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        sock.settimeout(timeout)
+        try:
+            sock.connect(path)
+        except OSError:
+            sock.close()
+            raise
+        super().__init__(sock)
+
+
+class _TcpConnection(_SocketConnection):
+    def __init__(self, host, port, timeout):
+        sock = socket.create_connection((host, port), timeout=min(timeout, 10))
+        sock.settimeout(timeout)
+        super().__init__(sock)
 
 
 class _PipeConnection:
@@ -232,12 +275,24 @@ def formatResponse(res):
 
 
 def instances():
-    """Return the information of running lys as list of dict."""
+    """
+    Return the information of running lys as list of dict.
+
+    lys on another computer is included when it is given by LYS_REMOTE environment variable.
+    """
+    labels = listLabels()
+    remote = os.environ.get("LYS_REMOTE")
+    if remote and _isTcp(remote):
+        labels.append(remote)
     res = []
-    for label in listLabels():
+    for label in labels:
         try:
             with LysClient(label, timeout=5) as c:
                 info = c.info()
+            if not info.get("ok", True):
+                raise LysRemoteError(info.get("error"))
+            if _isTcp(label):
+                info["label"] = label  # address is used to select lys on another computer
             if info.get("protocol") != PROTOCOL:
                 info["warning"] = "Protocol version mismatch (lys: " + str(info.get("protocol")) + ", lys_mcp: " + str(PROTOCOL) + ")"
         except Exception as e:
@@ -249,7 +304,8 @@ def instances():
 def main():
     parser = argparse.ArgumentParser(prog="lys-remote", description="Send commands to lys launched with --remote option.")
     parser.add_argument("code", nargs="?", help="Python code to be executed in lys")
-    parser.add_argument("-l", "--label", help="Label or home directory of lys (default: LYS_REMOTE environment variable, or the only running lys)")
+    parser.add_argument("-l", "--label", help="Label or home directory of lys, or tcp://<host>:<port> for lys on another computer (default: LYS_REMOTE environment variable, or the only running lys)")
+    parser.add_argument("--token", help="Token for lys launched with --token (default: LYS_REMOTE_TOKEN environment variable)")
     parser.add_argument("-f", "--file", help="Python file to be executed in lys")
     parser.add_argument("--image", metavar="PNG", help="Save image of the target to PNG")
     parser.add_argument("--target", help="Expression of canvas/figure/widget for --image (default: frontCanvas())")
@@ -270,7 +326,7 @@ def main():
         code = sys.stdin.read()
 
     try:
-        with LysClient(args.label) as c:
+        with LysClient(args.label, token=args.token) as c:
             ok = True
             if code is not None:
                 res = c.exec(code)

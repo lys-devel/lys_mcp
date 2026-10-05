@@ -61,11 +61,43 @@ Controlling lys from command line
     lys-remote --image out.png --target g           # save image of canvas/figure g
     lys-remote --list                               # list variables in lys shell
 
-If several lys are running, select lys by its label or home directory with ``-l`` option, or by ``LYS_REMOTE`` environment variable::
+If several lys are running, select lys by its label or home directory with ``-l`` option, or by ``LYS_REMOTE`` environment variable (see also `Connecting to lys on another computer`_)::
 
     lys-remote -l expA "a + 1"
     lys-remote -l ~/data/expA "a + 1"
     LYS_REMOTE=expA lys-remote "a + 1"
+
+Connecting to lys on another computer
+-----------------------------------------
+
+lys on another computer in the same network (e.g. a laboratory LAN) can be controlled through TCP.
+This is useful when lys runs on a computer without internet connection, and Claude Code runs on another computer.
+
+1. Launch lys with ``--port`` option on the computer where lys runs. ``--token`` is optional but recommended::
+
+    python -m lys --remote expA --port 8765 --token mysecret
+
+   The addresses to connect are shown in the lys log::
+
+    lys remote: listening on TCP port 8765 (192.168.1.4:8765)
+
+   On Windows, allow Python to communicate on private networks when the firewall asks.
+
+2. On the computer where Claude Code runs, check the connection by ``lys-remote``. The address is given as ``tcp://<host>:<port>``::
+
+    lys-remote -l tcp://192.168.1.4:8765 --token mysecret "1 + 1"
+
+3. Register the MCP server with the address and the token as environment variables, and restart Claude Code::
+
+    claude mcp remove lys --scope user
+    claude mcp add --scope user lys -e LYS_REMOTE=tcp://192.168.1.4:8765 -e LYS_REMOTE_TOKEN=mysecret -- lys-mcp
+
+   Then Claude controls lys on the other computer by default.
+   Without ``LYS_REMOTE``, you can also tell Claude the address, e.g. "Use lys at tcp://192.168.1.4:8765". In that case, ``LYS_REMOTE_TOKEN`` should still be registered if lys is launched with ``--token``.
+
+.. note::
+
+    The TCP connection is not encrypted, and any Python code can be executed through it. Use it only in a trusted network, and use ``--token``.
 
 Controlling lys from Python
 -----------------------------------
